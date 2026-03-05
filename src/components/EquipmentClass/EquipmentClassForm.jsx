@@ -57,7 +57,9 @@ const EquipmentClassForm = ({
         autoId: selectedItem.autoId,
         id: selectedItem.id,
         description: values.description,
-        effectiveStartDate: selectedItem.effectiveStartDate,
+        effectiveStartDate: values.effectiveStartDate
+          ? values.effectiveStartDate.toISOString()
+          : selectedItem.effectiveStartDate,
         effectiveEndDate: values.effectiveEndDate
           ? values.effectiveEndDate.toISOString()
           : null,
@@ -112,7 +114,7 @@ const EquipmentClassForm = ({
           { required: true, message: "Effective Start Date is required" },
         ]}
       >
-        <DatePicker style={{ width: "100%" }} disabled />
+        <DatePicker style={{ width: "100%" }} disabled={!isEditMode} />
       </Form.Item>
 
       <Form.Item

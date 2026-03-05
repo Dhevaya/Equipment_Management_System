@@ -64,7 +64,9 @@ const PropertiesForm = ({
         value: values.value,
         uom: values.uom,
         equipmentClassAutoId: selectedProperty.equipmentClassAutoId,
-        effectiveStartDate: selectedProperty.effectiveStartDate,
+        effectiveStartDate: values.effectiveStartDate
+          ? values.effectiveStartDate.toISOString()
+          : selectedProperty.effectiveStartDate,
         effectiveEndDate: values.effectiveEndDate
           ? values.effectiveEndDate.toISOString()
           : null,
@@ -150,7 +152,7 @@ const PropertiesForm = ({
           { required: true, message: "Effective Start Date is required" },
         ]}
       >
-        <DatePicker style={{ width: "100%" }} disabled />
+        <DatePicker style={{ width: "100%" }} disabled={!isEditMode} />
       </Form.Item>
 
       <Form.Item
