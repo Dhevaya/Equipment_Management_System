@@ -139,6 +139,7 @@ const equipmentClassSlice = createSlice({
           state.items[index] = {
             ...state.items[index],
             description: action.payload.description,
+            effectiveStartDate: action.payload.effectiveStartDate,
             effectiveEndDate: action.payload.effectiveEndDate,
             isActive: action.payload.isActive,
           };

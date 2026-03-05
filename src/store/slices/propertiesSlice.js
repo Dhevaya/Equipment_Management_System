@@ -139,6 +139,7 @@ const propertiesSlice = createSlice({
             description: action.payload.description,
             value: action.payload.value,
             uom: action.payload.uom,
+            effectiveStartDate: action.payload.effectiveStartDate,
             effectiveEndDate: action.payload.effectiveEndDate,
           };
         }
