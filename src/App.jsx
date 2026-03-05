@@ -118,7 +118,7 @@ const App = () => {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       
-      <Header style={{ padding: 0 }}>
+      <Header style={{ padding: 0, height: 88, lineHeight: "normal" }}>
         <TopBar />
       </Header>
 

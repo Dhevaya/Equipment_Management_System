@@ -1,56 +1,68 @@
-// import { useSelector } from "react-redux";
-// import { Layout, Typography } from "antd";
-
-// const { Header } = Layout;
-// const { Text } = Typography;
-
-// const TopBar = () => {
-//   const enterprise = useSelector((state) => state.hierarchy.enterprise);
-//   const site = useSelector((state) => state.hierarchy.site);
-//   const area = useSelector((state) => state.hierarchy.area);
-
-//   return (
-//     <Header
-//       style={{
-//         display: "flex",
-//         alignItems: "center",
-//         background: "#001529",
-//         padding: "0 24px",
-//       }}
-//     >
-//       <Text style={{ color: "#fff", fontSize: 16 }}>
-//         {enterprise.id} | {site.id} | {area.id}
-//       </Text>
-//     </Header>
-//   );
-// };
-
-
-// export default TopBar;
-
 import { useSelector } from "react-redux";
 import { Typography } from "antd";
 
-const { Text } = Typography;
+const { Title, Text } = Typography;
 
 const TopBar = () => {
   const enterprise = useSelector((state) => state.hierarchy.enterprise);
   const site = useSelector((state) => state.hierarchy.site);
   const area = useSelector((state) => state.hierarchy.area);
 
+  const enterpriseDisplay = enterprise.id?.replace(/^Enterprise/i, "") || "";
+  const siteDisplay = site.id?.replace(/^Site/i, "") || "";
+  const areaDisplay = area.id?.replace(/^Area/i, "") || "";
+
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
         background: "#001529",
         padding: "0 24px",
-        height: "64px",
+        height: "88px",
       }}
     >
-      <Text style={{ color: "#fff", fontSize: 16 }}>
-        {enterprise.id} | {site.id} | {area.id}
-      </Text>
+      <Title
+        level={4}
+        style={{ color: "#fff", margin: 0, textAlign: "center" }}
+      >
+        Equipment Management System
+      </Title>
+
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          textAlign: "center",
+          columnGap: 6,
+          rowGap: 2,
+        }}
+      >
+        <Text style={{ color: "#fff" }}>
+          <Text strong style={{ color: "#fff" }}>
+            Enterprise:
+          </Text>{" "}
+          {enterpriseDisplay}
+        </Text>
+        <Text style={{ color: "#fff" }}>|</Text>
+        <Text style={{ color: "#fff" }}>
+          <Text strong style={{ color: "#fff" }}>
+            Site:
+          </Text>{" "}
+          {siteDisplay}
+        </Text>
+        <Text style={{ color: "#fff" }}>|</Text>
+        <Text style={{ color: "#fff" }}>
+          <Text strong style={{ color: "#fff" }}>
+            Area:
+          </Text>{" "}
+          {areaDisplay}
+        </Text>
+      </div>
     </div>
   );
 };
