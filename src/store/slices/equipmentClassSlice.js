@@ -13,8 +13,9 @@ export const fetchEquipmentClasses = createAsyncThunk(
       const response = await getEquipmentClasses();
       return response.data.map((post) => ({
         autoId: post.id,
-        id: post.title,
-        description: post.body,
+        
+        id: `EQUIP${String(post.id).padStart(3, "0")}`,
+        description: post.title,
         effectiveStartDate: null,
         effectiveEndDate: null,
         isActive: true,
