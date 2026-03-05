@@ -1,4 +1,67 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  getEquipmentClasses,
+  createEquipmentClass,
+  updateEquipmentClass,
+} from "../../api/equipmentClassApi";
+
+// Thunk: fetch all equipment classes
+export const fetchEquipmentClasses = createAsyncThunk(
+  "equipmentClass/fetchEquipmentClasses",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await getEquipmentClasses();
+      return response.data.map((post) => ({
+        autoId: post.id,
+        id: post.title,
+        description: post.body,
+        effectiveStartDate: null,
+        effectiveEndDate: null,
+        isActive: true,
+      }));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Thunk: create a new equipment class
+export const addEquipmentClass = createAsyncThunk(
+  "equipmentClass/addEquipmentClass",
+  async (data, { rejectWithValue }) => {
+    try {
+      const payload = {
+        ...data,
+        autoId: 0,
+        effectiveStartDate: new Date().toISOString(),
+      };
+      const response = await createEquipmentClass(payload);
+      return {
+        autoId: response.data.id,
+        id: payload.id,
+        description: payload.description,
+        effectiveStartDate: payload.effectiveStartDate,
+        effectiveEndDate: payload.effectiveEndDate ?? null,
+        isActive: payload.isActive ?? true,
+      };
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Thunk: update an existing equipment class
+export const editEquipmentClass = createAsyncThunk(
+  "equipmentClass/editEquipmentClass",
+  async (data, { rejectWithValue }) => {
+    try {
+      await updateEquipmentClass(data.autoId, data);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const initialState = {
   items: [],
@@ -10,7 +73,68 @@ const initialState = {
 const equipmentClassSlice = createSlice({
   name: "equipmentClass",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedEquipmentClass: (state, action) => {
+      state.selectedItem = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    // fetchEquipmentClasses
+    builder
+      .addCase(fetchEquipmentClasses.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchEquipmentClasses.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = action.payload;
+      })
+      .addCase(fetchEquipmentClasses.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // addEquipmentClass
+    builder
+      .addCase(addEquipmentClass.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(addEquipmentClass.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items.push(action.payload);
+      })
+      .addCase(addEquipmentClass.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // editEquipmentClass
+    builder
+      .addCase(editEquipmentClass.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(editEquipmentClass.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        const index = state.items.findIndex(
+          (item) => item.autoId === action.payload.autoId
+        );
+        if (index !== -1) {
+          state.items[index] = {
+            ...state.items[index],
+            description: action.payload.description,
+            effectiveEndDate: action.payload.effectiveEndDate,
+            isActive: action.payload.isActive,
+          };
+        }
+      })
+      .addCase(editEquipmentClass.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+  },
 });
 
+export const { setSelectedEquipmentClass } = equipmentClassSlice.actions;
 export default equipmentClassSlice.reducer;
