@@ -76,3 +76,7 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+
+.selected-row {
+  background-color: #e6f7ff !important;
+}

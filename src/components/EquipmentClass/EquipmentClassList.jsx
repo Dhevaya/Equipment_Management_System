@@ -55,7 +55,7 @@ const EquipmentClassList = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Title level={3} style={{ wordBreak: "break-word" }}>Equipment Classes</Title>
+      <Title level={3} style={{ wordBreak: "break-word", marginBottom: 24 }}>Equipment Classes</Title>
 
       {error && (
         <div style={{ color: "red", marginBottom: 16 }}>
@@ -65,16 +65,18 @@ const EquipmentClassList = () => {
 
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={8}>
-          <EquipmentClassForm
-            selectedItem={selectedItem}
-            onCreate={handleCreate}
-            onUpdate={handleUpdate}
-            onReset={() => selectEquipmentClass(null)}
-          />
+          <Card title="Equipment Class Form">
+            <EquipmentClassForm
+              selectedItem={selectedItem}
+              onCreate={handleCreate}
+              onUpdate={handleUpdate}
+              onReset={() => selectEquipmentClass(null)}
+            />
+          </Card>
         </Col>
 
         <Col xs={24} lg={16}>
-          <Card>
+          <Card title="Equipment Classes">
             <Input.Search
               placeholder="Search Equipment Classes"
               allowClear

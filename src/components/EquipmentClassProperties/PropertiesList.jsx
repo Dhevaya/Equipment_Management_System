@@ -72,7 +72,7 @@ const PropertiesList = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Title level={4} style={{ wordBreak: "break-word" }}>
+      <Title level={4} style={{ wordBreak: "break-word", marginBottom: 24 }}>
         Properties — {selectedEquipmentClass.id}
       </Title>
       {error && (
@@ -80,17 +80,19 @@ const PropertiesList = () => {
       )}
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={8}>
-          <PropertiesForm
-            selectedProperty={selectedProperty}
-            equipmentClassAutoId={selectedEquipmentClass.autoId}
-            items={items}
-            onCreate={handleCreate}
-            onUpdate={handleUpdate}
-            onReset={() => setSelectedProperty(null)}
-          />
+          <Card title="Properties Form">
+            <PropertiesForm
+              selectedProperty={selectedProperty}
+              equipmentClassAutoId={selectedEquipmentClass.autoId}
+              items={items}
+              onCreate={handleCreate}
+              onUpdate={handleUpdate}
+              onReset={() => setSelectedProperty(null)}
+            />
+          </Card>
         </Col>
         <Col xs={24} lg={16}>
-          <Card>
+          <Card title="Properties">
             <Input.Search
               placeholder="Search Properties"
               allowClear

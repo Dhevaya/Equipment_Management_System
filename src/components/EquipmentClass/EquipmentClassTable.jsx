@@ -1,4 +1,4 @@
-import { Table, Tag, Spin, Button, Popconfirm, Space } from "antd";
+import { Table, Tag, Spin, Button, Popconfirm, Space, Empty } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
@@ -78,12 +78,23 @@ const EquipmentClassTable = ({ items, status, selectedItem, onSelect, onDelete }
     },
   ];
 
+  if (!items || items.length === 0) {
+    return (
+      <Spin spinning={status === "loading"}>
+        <Empty description="No Equipment Classes Found" />
+      </Spin>
+    );
+  }
+
   return (
     <Spin spinning={status === "loading"}>
       <Table
         columns={columns}
         dataSource={items}
         rowKey="autoId"
+        rowClassName={(record) =>
+          selectedItem?.autoId === record.autoId ? "selected-row" : ""
+        }
         pagination={{
           pageSize: 10,
           showSizeChanger: true,
@@ -92,13 +103,7 @@ const EquipmentClassTable = ({ items, status, selectedItem, onSelect, onDelete }
         scroll={{ x: true }}
         onRow={(record) => ({
           onClick: () => onSelect(record),
-          style: {
-            cursor: "pointer",
-            background:
-              selectedItem && selectedItem.autoId === record.autoId
-                ? "#e6f7ff"
-                : undefined,
-          },
+          style: { cursor: "pointer" },
         })}
       />
     </Spin>
