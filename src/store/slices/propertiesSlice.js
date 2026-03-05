@@ -3,6 +3,7 @@ import {
   getProperties,
   createProperty,
   updateProperty,
+  deleteProperty,
 } from "../../api/propertiesApi";
 
 // Thunk: fetch properties for a selected equipment class
@@ -61,6 +62,19 @@ export const editProperty = createAsyncThunk(
     try {
       await updateProperty(data.autoId, data);
       return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Thunk: delete a property
+export const removeProperty = createAsyncThunk(
+  "properties/removeProperty",
+  async (autoId, { rejectWithValue }) => {
+    try {
+      await deleteProperty(autoId);
+      return autoId;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -130,6 +144,23 @@ const propertiesSlice = createSlice({
         }
       })
       .addCase(editProperty.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // removeProperty
+    builder
+      .addCase(removeProperty.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(removeProperty.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = state.items.filter(
+          (item) => item.autoId !== action.payload
+        );
+      })
+      .addCase(removeProperty.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

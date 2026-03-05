@@ -3,6 +3,7 @@ import {
   getEquipmentClasses,
   createEquipmentClass,
   updateEquipmentClass,
+  deleteEquipmentClass,
 } from "../../api/equipmentClassApi";
 
 // Thunk: fetch all equipment classes
@@ -58,6 +59,19 @@ export const editEquipmentClass = createAsyncThunk(
     try {
       await updateEquipmentClass(data.autoId, data);
       return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Thunk: delete an equipment class
+export const removeEquipmentClass = createAsyncThunk(
+  "equipmentClass/removeEquipmentClass",
+  async (autoId, { rejectWithValue }) => {
+    try {
+      await deleteEquipmentClass(autoId);
+      return autoId;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -131,6 +145,26 @@ const equipmentClassSlice = createSlice({
         }
       })
       .addCase(editEquipmentClass.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+
+    // removeEquipmentClass
+    builder
+      .addCase(removeEquipmentClass.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(removeEquipmentClass.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.items = state.items.filter(
+          (item) => item.autoId !== action.payload
+        );
+        if (state.selectedItem && state.selectedItem.autoId === action.payload) {
+          state.selectedItem = null;
+        }
+      })
+      .addCase(removeEquipmentClass.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

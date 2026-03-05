@@ -3,6 +3,7 @@ import {
   fetchEquipmentClasses,
   addEquipmentClass,
   editEquipmentClass,
+  removeEquipmentClass,
   setSelectedEquipmentClass,
 } from "../store/slices/equipmentClassSlice";
 
@@ -18,6 +19,9 @@ const useEquipmentClass = () => {
 
   const updateEquipmentClass = (data) => dispatch(editEquipmentClass(data));
 
+  const deleteEquipmentClass = (autoId) =>
+    dispatch(removeEquipmentClass(autoId));
+
   const selectEquipmentClass = (item) =>
     dispatch(setSelectedEquipmentClass(item));
 
@@ -29,6 +33,7 @@ const useEquipmentClass = () => {
     loadEquipmentClasses,
     createEquipmentClass,
     updateEquipmentClass,
+    deleteEquipmentClass,
     selectEquipmentClass,
   };
 };

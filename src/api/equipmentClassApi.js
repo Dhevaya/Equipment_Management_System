@@ -11,3 +11,7 @@ export const createEquipmentClass = (data) => {
 export const updateEquipmentClass = (autoId, data) => {
   return axiosInstance.put(`/posts/${autoId}`, data);
 };
+
+export const deleteEquipmentClass = (autoId) => {
+  return axiosInstance.delete(`/posts/${autoId}`);
+};

@@ -63,6 +63,8 @@ const EquipmentClassForm = ({
           : null,
         isActive: values.isActive,
       });
+      form.resetFields();
+      onReset();
     });
   };
 

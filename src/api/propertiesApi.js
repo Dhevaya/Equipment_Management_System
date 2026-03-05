@@ -11,3 +11,7 @@ export const createProperty = (data) => {
 export const updateProperty = (autoId, data) => {
   return axiosInstance.put(`/comments/${autoId}`, data);
 };
+
+export const deleteProperty = (autoId) => {
+  return axiosInstance.delete(`/comments/${autoId}`);
+};

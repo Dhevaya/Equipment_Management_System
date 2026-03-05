@@ -3,6 +3,7 @@ import {
   fetchProperties,
   addProperty,
   editProperty,
+  removeProperty,
 } from "../store/slices/propertiesSlice";
 
 const useProperties = () => {
@@ -16,6 +17,8 @@ const useProperties = () => {
 
   const updateProperty = (data) => dispatch(editProperty(data));
 
+  const deletePropertyAction = (autoId) => dispatch(removeProperty(autoId));
+
   return {
     items,
     status,
@@ -23,6 +26,7 @@ const useProperties = () => {
     loadProperties,
     createProperty,
     updateProperty,
+    deleteProperty: deletePropertyAction,
   };
 };
 

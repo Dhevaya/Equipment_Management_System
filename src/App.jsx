@@ -129,7 +129,7 @@ const App = () => {
           setSelectedPage={setSelectedPage}
         />
 
-        <Layout>
+        <Layout style={{ flex: 1, minWidth: 0 }}>
           <Content
             style={{
               padding: 24,

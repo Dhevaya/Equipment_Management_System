@@ -5,6 +5,7 @@ import dayjs from "dayjs";
 const PropertiesForm = ({
   selectedProperty,
   equipmentClassAutoId,
+  items,
   onCreate,
   onUpdate,
   onReset,
@@ -68,6 +69,8 @@ const PropertiesForm = ({
           ? values.effectiveEndDate.toISOString()
           : null,
       });
+      form.resetFields();
+      onReset();
     });
   };
 
@@ -87,6 +90,20 @@ const PropertiesForm = ({
           {
             pattern: /^\S+$/,
             message: "Property ID must not contain spaces",
+          },
+          {
+            validator: (_, value) => {
+              if (!value || isEditMode) return Promise.resolve();
+              const duplicate = (items || []).find(
+                (item) => item.id === value
+              );
+              if (duplicate) {
+                return Promise.reject(
+                  new Error("Property ID must be unique within this equipment class")
+                );
+              }
+              return Promise.resolve();
+            },
           },
         ]}
       >

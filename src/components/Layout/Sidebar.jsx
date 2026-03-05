@@ -46,7 +46,12 @@ const items = [
 
 const Sidebar = ({ selectedPage, setSelectedPage }) => {
   return (
-    <Sider width={220} style={{ background: "#fff" }}>
+    <Sider
+      width={220}
+      breakpoint="lg"
+      collapsedWidth="0"
+      style={{ background: "#fff" }}
+    >
       <Menu
         mode="inline"
         selectedKeys={[selectedPage]}
