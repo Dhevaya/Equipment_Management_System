@@ -1,148 +1,290 @@
+
 # Equipment Management System
 
-A React-based web application for managing equipment classes and their associated properties within an enterprise manufacturing hierarchy.
+A React-based Equipment Management System that allows users to manage **Equipment Classes** and their **Properties** within an enterprise hierarchy.
+The application uses **Redux Toolkit for global state management**, **Ant Design for UI components**, and integrates with **JSONPlaceholder public APIs** to simulate backend operations.
 
 ---
 
-## Project Setup
+# Project Overview
 
-### Prerequisites
+This system provides a dashboard to manage equipment data in an enterprise structure.
 
-- [Node.js](https://nodejs.org/) v18 or higher
-- npm v9 or higher
+Hierarchy Structure:
 
-### Installation
+Enterprise → Site → Area → Equipment Classes → Properties
 
-```bash
-# Clone the repository
-git clone https://github.com/Dhevaya/Equpiment_Management_System.git
-cd Equpiment_Management_System
+Users can:
 
-# Install dependencies
+• View and manage equipment classes
+• Create and update equipment classes
+• Select an equipment class to manage its properties
+• Create and update equipment properties
+• View data in responsive tables with sorting and filtering
+
+The application simulates backend CRUD operations using the JSONPlaceholder REST API.
+
+---
+
+# Technologies Used
+
+React (Vite)
+Redux Toolkit
+React Redux
+Axios
+Ant Design
+Day.js
+
+---
+
+# Architecture
+
+The project follows a **modular architecture** separating UI, state management, and API layers.
+
+```
+src
+│
+├── api
+│   ├── axiosInstance.js
+│   ├── equipmentClassApi.js
+│   └── propertiesApi.js
+│
+├── components
+│   ├── Layout
+│   │   ├── TopBar.jsx
+│   │   └── Sidebar.jsx
+│   │
+│   ├── EquipmentClass
+│   │   ├── EquipmentClassList.jsx
+│   │   ├── EquipmentClassForm.jsx
+│   │   └── EquipmentClassTable.jsx
+│   │
+│   └── EquipmentClassProperties
+│       ├── PropertiesList.jsx
+│       ├── PropertiesForm.jsx
+│       └── PropertiesTable.jsx
+│
+├── hooks
+│   ├── useEquipmentClass.js
+│   └── useProperties.js
+│
+├── store
+│   ├── index.js
+│   └── slices
+│       ├── hierarchySlice.js
+│       ├── equipmentClassSlice.js
+│       └── propertiesSlice.js
+│
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+# Redux State Structure
+
+The application uses three Redux slices.
+
+### Hierarchy Slice
+
+Stores static enterprise hierarchy information.
+
+```
+enterprise
+site
+area
+```
+
+This data is displayed in the **TopBar**.
+
+---
+
+### Equipment Class Slice
+
+Manages equipment class records.
+
+```
+items
+selectedItem
+status
+error
+```
+
+Handles:
+
+* Fetch equipment classes
+* Create equipment class
+* Update equipment class
+* Delete equipment class
+
+---
+
+### Properties Slice
+
+Manages properties belonging to a selected equipment class.
+
+```
+items
+status
+error
+```
+
+Handles:
+
+* Fetch properties
+* Create property
+* Update property
+* Delete property
+
+---
+
+# API Integration
+
+The application uses the **JSONPlaceholder public REST API** to simulate backend operations.
+
+Base URL:
+
+```
+https://jsonplaceholder.typicode.com
+```
+
+Endpoints used:
+
+Equipment Classes:
+
+```
+GET    /posts
+POST   /posts
+PUT    /posts/{id}
+DELETE /posts/{id}
+```
+
+Properties:
+
+```
+GET    /comments?postId={equipmentClassId}
+POST   /comments
+PUT    /comments/{id}
+DELETE /comments/{id}
+```
+
+Redux `createAsyncThunk` is used to handle asynchronous API requests.
+
+---
+
+# Features
+
+Equipment Class Management
+
+• Load equipment classes from API
+• Create new equipment class
+• Update existing equipment class
+• Delete equipment class
+• Row selection in table
+• Form validation
+
+Properties Management
+
+• Load properties when an equipment class is selected
+• Create property
+• Update property
+• Delete property
+
+UI Features
+
+• Responsive layout
+• Search and filtering
+• Table sorting
+• Pagination
+• Confirmation dialogs
+• Success notifications
+
+---
+
+# Business Rules
+
+The application follows the **autoId convention**:
+
+| autoId Value | Operation              |
+| ------------ | ---------------------- |
+| 0            | Create new record      |
+| >0           | Update existing record |
+
+Immutable fields after creation:
+
+Equipment Class
+
+• id
+• effectiveStartDate
+
+Properties
+
+• id
+• effectiveStartDate
+
+These fields are disabled in edit mode.
+
+---
+
+# Date Validation Rules
+
+• effectiveStartDate is auto-generated during creation
+• effectiveEndDate must be after effectiveStartDate
+• Date comparisons are handled using **Day.js**
+
+---
+
+# Responsive Design
+
+The application uses Ant Design's responsive grid system.
+
+Desktop:
+
+Form and table appear side-by-side.
+
+Mobile:
+
+Components stack vertically for better usability.
+
+---
+
+# Installation
+
+Clone the repository:
+
+```
+git clone https://github.com/Dhevaya/Equipment_Management_System.git
+```
+
+Install dependencies:
+
+```
 npm install
 ```
 
----
+Run the development server:
 
-## How to Run
-
-```bash
-# Start the development server
+```
 npm run dev
 ```
 
-Open your browser and navigate to `http://localhost:5173`.
+The application will run at:
 
-```bash
-# Build for production
-npm run build
-
-# Preview the production build
-npm run preview
+```
+http://localhost:5173
 ```
 
 ---
 
-## Technologies Used
+# Future Improvements
 
-| Technology | Version | Purpose |
-|---|---|---|
-| React | 19 | UI framework |
-| Vite | 7 | Build tool and dev server |
-| Redux Toolkit | 2 | Global state management |
-| React Redux | 9 | React bindings for Redux |
-| Ant Design | 6 | UI component library |
-| Axios | 1 | HTTP client |
-| Day.js | 1 | Date parsing and formatting |
-| React Router DOM | 7 | Client-side routing (installed) |
+Possible enhancements include:
 
-**Mock API:** [JSONPlaceholder](https://jsonplaceholder.typicode.com) is used as a stand-in REST backend (`/posts` → Equipment Classes, `/comments` → Properties).
+• Authentication and role-based access
+• Real backend integration
+• Bulk actions and export functionality
+• Advanced analytics dashboards
 
 ---
 
-## Architecture
-
-```
-src/
-├── api/
-│   ├── axiosInstance.js          # Axios instance (baseURL: jsonplaceholder)
-│   ├── equipmentClassApi.js      # GET / POST / PUT / DELETE for /posts
-│   └── propertiesApi.js          # GET / POST / PUT / DELETE for /comments
-│
-├── store/
-│   ├── index.js                  # Redux store configuration
-│   └── slices/
-│       ├── hierarchySlice.js     # Static enterprise/site/area hierarchy data
-│       ├── equipmentClassSlice.js# Equipment class CRUD + async thunks
-│       └── propertiesSlice.js    # Properties CRUD + async thunks
-│
-├── hooks/
-│   ├── useEquipmentClass.js      # Selector + action dispatcher for equipment classes
-│   └── useProperties.js          # Selector + action dispatcher for properties
-│
-├── components/
-│   ├── Layout/
-│   │   ├── TopBar.jsx            # Header bar showing enterprise/site/area
-│   │   └── Sidebar.jsx           # Collapsible navigation sidebar
-│   ├── EquipmentClass/
-│   │   ├── EquipmentClassList.jsx  # Container: search, layout, messages
-│   │   ├── EquipmentClassTable.jsx # Table: sort, filter, select, delete
-│   │   └── EquipmentClassForm.jsx  # Form: create / edit equipment class
-│   └── EquipmentClassProperties/
-│       ├── PropertiesList.jsx    # Container: search, layout, messages
-│       ├── PropertiesTable.jsx   # Table: sort, select, delete
-│       └── PropertiesForm.jsx    # Form: create / edit property
-│
-└── App.jsx                       # Root layout, page-level navigation state
-```
-
-### State Management Pattern
-
-Each module follows the same three-layer pattern:
-
-```
-API layer (axiosInstance)
-    ↓
-Redux slice (createAsyncThunk)
-    ↓
-Custom hook (useSelector + useDispatch)
-    ↓
-List component (Container)
-    ↓
-Table + Form components (Presentational)
-```
-
-### Data Model Conventions
-
-- `autoId: 0` — signals a **create** operation to the slice
-- `autoId > 0` — signals an **update** or **delete** operation
-- Equipment Class IDs are formatted as `EQUIP001`, `EQUIP002`, etc.
-
----
-
-## Features
-
-### Equipment Classes
-- View all equipment classes in a sortable, paginated table
-- Create a new equipment class with ID, description, effective start date, and optional effective end date
-- Edit an existing equipment class (row click to populate form)
-- Delete an equipment class with a confirmation dialog
-- Search/filter by Equipment Class ID or description
-- Filter table by Status (Active / Inactive)
-- Column sorting on ID, Description, and Created date
-- Effective end date must be after the effective start date (form validation)
-- Effective start date is automatically set to the current date on create
-
-### Properties
-- Properties are scoped to the selected equipment class
-- View, create, edit, and delete properties per equipment class
-- Search/filter by Property ID, description, value, or unit of measure (UOM)
-- Column sorting on Property ID, Description, Value, and Created date
-- Unique Property ID validation (no duplicate IDs within a class)
-
-### General
-- Success toast notifications for all create, update, and delete operations
-- Responsive layout — sidebar collapses on screens narrower than `lg` breakpoint
-- Top bar displays live enterprise hierarchy context (Enterprise → Site → Area)
-- Empty state messaging when no equipment class is selected
 
