@@ -28,7 +28,21 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error("API Error:", error);
+    const status = error?.response?.status;
+    const method = (error?.config?.method || "").toLowerCase();
+    const url = error?.config?.url || "";
+
+    // JSONPlaceholder does not persist created records; PUT/DELETE on those IDs can return 500.
+    // Avoid noisy stack traces in console for this expected mock API behavior.
+    const isExpectedMockApi500 =
+      status === 500 &&
+      (method === "put" || method === "delete") &&
+      /^\/((posts)|(comments))\/\d+$/.test(url);
+
+    if (!isExpectedMockApi500) {
+      console.error("API Error:", error);
+    }
+
     return Promise.reject(error);
   }
 );

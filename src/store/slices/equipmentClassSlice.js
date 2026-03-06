@@ -60,6 +60,15 @@ export const editEquipmentClass = createAsyncThunk(
       await updateEquipmentClass(data.autoId, data);
       return data;
     } catch (error) {
+      const isExpectedMockApiUpdateFailure =
+        error?.response?.status === 500 && Number(data?.autoId) > 100;
+
+      // JSONPlaceholder does not persist newly created records.
+      // For mock-created IDs, keep UX smooth by applying local update.
+      if (isExpectedMockApiUpdateFailure) {
+        return data;
+      }
+
       return rejectWithValue(error.message);
     }
   }

@@ -1,8 +1,25 @@
+import { useEffect, useMemo, useState } from "react";
 import { Table, Tag, Spin, Button, Popconfirm, Space, Empty } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 
 const EquipmentClassTable = ({ items, status, selectedItem, onSelect, onDelete }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+
+  const sortedItems = useMemo(() => {
+    return [...(items || [])].sort((a, b) => {
+      const dateA = new Date(a.effectiveStartDate || 0).getTime();
+      const dateB = new Date(b.effectiveStartDate || 0).getTime();
+      return dateB - dateA;
+    });
+  }, [items]);
+
+  useEffect(() => {
+    // Keep users on the first page after data changes so new entries are visible.
+    setCurrentPage(1);
+  }, [sortedItems.length]);
+
   const columns = [
     {
       title: "ID",
@@ -90,15 +107,20 @@ const EquipmentClassTable = ({ items, status, selectedItem, onSelect, onDelete }
     <Spin spinning={status === "loading"}>
       <Table
         columns={columns}
-        dataSource={items}
+        dataSource={sortedItems}
         rowKey="autoId"
         rowClassName={(record) =>
           selectedItem?.autoId === record.autoId ? "selected-row" : ""
         }
         pagination={{
-          pageSize: 10,
+          current: currentPage,
+          pageSize,
           showSizeChanger: true,
           pageSizeOptions: ["5", "10", "20", "50"],
+          onChange: (page, size) => {
+            setCurrentPage(page);
+            setPageSize(size);
+          },
         }}
         scroll={{ x: true }}
         onRow={(record) => ({

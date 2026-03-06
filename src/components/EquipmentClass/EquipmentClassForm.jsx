@@ -13,12 +13,14 @@ const EquipmentClassForm = ({
 
   useEffect(() => {
     if (selectedItem) {
+      const startDateValue = selectedItem.effectiveStartDate
+        ? dayjs(selectedItem.effectiveStartDate)
+        : dayjs();
+
       form.setFieldsValue({
         id: selectedItem.id,
         description: selectedItem.description,
-        effectiveStartDate: selectedItem.effectiveStartDate
-          ? dayjs(selectedItem.effectiveStartDate)
-          : null,
+        effectiveStartDate: startDateValue,
         effectiveEndDate: selectedItem.effectiveEndDate
           ? dayjs(selectedItem.effectiveEndDate)
           : null,
@@ -52,14 +54,20 @@ const EquipmentClassForm = ({
   };
 
   const handleUpdate = () => {
+    if (!form.getFieldValue("effectiveStartDate")) {
+      form.setFieldsValue({ effectiveStartDate: dayjs() });
+    }
+
     form.validateFields().then((values) => {
       onUpdate({
         autoId: selectedItem.autoId,
         id: selectedItem.id,
         description: values.description,
-        effectiveStartDate: values.effectiveStartDate
-          ? values.effectiveStartDate.toISOString()
-          : selectedItem.effectiveStartDate,
+        effectiveStartDate:
+          selectedItem.effectiveStartDate ||
+          (values.effectiveStartDate
+            ? values.effectiveStartDate.toISOString()
+            : new Date().toISOString()),
         effectiveEndDate: values.effectiveEndDate
           ? values.effectiveEndDate.toISOString()
           : null,
@@ -114,7 +122,7 @@ const EquipmentClassForm = ({
           { required: true, message: "Effective Start Date is required" },
         ]}
       >
-        <DatePicker style={{ width: "100%" }} disabled={!isEditMode} />
+        <DatePicker style={{ width: "100%" }} disabled />
       </Form.Item>
 
       <Form.Item
