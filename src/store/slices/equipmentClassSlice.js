@@ -88,6 +88,15 @@ export const removeEquipmentClass = createAsyncThunk(
       await deleteEquipmentClass(autoId);
       return autoId;
     } catch (error) {
+      const isExpectedMockApiDeleteFailure =
+        error?.response?.status === 500 && Number(autoId) > 100;
+
+      // JSONPlaceholder cannot delete mock-created IDs server-side.
+      // Keep state consistent by treating this as a local success.
+      if (isExpectedMockApiDeleteFailure) {
+        return autoId;
+      }
+
       return rejectWithValue(error.message);
     }
   }

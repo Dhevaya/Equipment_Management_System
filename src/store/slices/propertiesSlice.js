@@ -69,6 +69,15 @@ export const editProperty = createAsyncThunk(
       await updateProperty(data.autoId, data);
       return data;
     } catch (error) {
+      const isExpectedMockApiUpdateFailure =
+        error?.response?.status === 500 && Number(data?.autoId) > 100;
+
+      // JSONPlaceholder does not persist newly created records.
+      // For mock-created IDs, keep UX smooth by applying local update.
+      if (isExpectedMockApiUpdateFailure) {
+        return data;
+      }
+
       return rejectWithValue(error.message);
     }
   }
@@ -82,6 +91,15 @@ export const removeProperty = createAsyncThunk(
       await deleteProperty(autoId);
       return autoId;
     } catch (error) {
+      const isExpectedMockApiDeleteFailure =
+        error?.response?.status === 500 && Number(autoId) > 100;
+
+      // JSONPlaceholder cannot delete mock-created IDs server-side.
+      // Keep state consistent by treating this as a local success.
+      if (isExpectedMockApiDeleteFailure) {
+        return autoId;
+      }
+
       return rejectWithValue(error.message);
     }
   }
