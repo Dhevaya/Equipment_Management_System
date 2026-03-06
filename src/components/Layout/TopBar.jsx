@@ -14,48 +14,30 @@ const TopBar = () => {
 
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#001529",
-        padding: "0 24px",
-        height: "88px",
-      }}
+      className="topbar-container"
     >
       <Title
         level={4}
-        style={{ color: "#fff", margin: 0, textAlign: "center" }}
+        className="topbar-title"
       >
         Equipment Management System
       </Title>
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexWrap: "wrap",
-          textAlign: "center",
-          columnGap: 6,
-          rowGap: 2,
-        }}
-      >
+      <div className="topbar-hierarchy">
         <Text style={{ color: "#fff" }}>
           <Text strong style={{ color: "#fff" }}>
             Enterprise:
           </Text>{" "}
           {enterpriseDisplay}
         </Text>
-        <Text style={{ color: "#fff" }}>|</Text>
+        <Text className="topbar-separator" style={{ color: "#fff" }}>|</Text>
         <Text style={{ color: "#fff" }}>
           <Text strong style={{ color: "#fff" }}>
             Site:
           </Text>{" "}
           {siteDisplay}
         </Text>
-        <Text style={{ color: "#fff" }}>|</Text>
+        <Text className="topbar-separator" style={{ color: "#fff" }}>|</Text>
         <Text style={{ color: "#fff" }}>
           <Text strong style={{ color: "#fff" }}>
             Area:

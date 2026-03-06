@@ -274,17 +274,5 @@ The application will run at:
 http://localhost:5173
 ```
 
----
-
-# Future Improvements
-
-Possible enhancements include:
-
-• Authentication and role-based access
-• Real backend integration
-• Bulk actions and export functionality
-• Advanced analytics dashboards
-
----
 
 
