@@ -1,3 +1,8 @@
+/**
+ * Axios Instance Configuration
+ * Centralized API client used across the application.
+ * Includes request and response interceptors for error handling.
+ */
 import axios from "axios";
 
 // Create a reusable Axios instance with base configuration
@@ -6,42 +11,31 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  timeout: 10000, // Request timeout as specified in project requirements
 });
 
 // Request interceptor
 // Runs before every API request is sent
 axiosInstance.interceptors.request.use(
   (config) => {
-    // You could attach authentication tokens here in real applications
+    // Authentication tokens could be attached here in real-world APIs
     return config;
   },
   (error) => {
-    // Handle request errors
     return Promise.reject(error);
   }
 );
 
 // Response interceptor
-// Runs after every API response
+// Handles API responses and centralized error logging
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   (error) => {
-    const status = error?.response?.status;
-    const method = (error?.config?.method || "").toLowerCase();
-    const url = error?.config?.url || "";
-
-    // JSONPlaceholder does not persist created records; PUT/DELETE on those IDs can return 500.
-    // Avoid noisy stack traces in console for this expected mock API behavior.
-    const isExpectedMockApi500 =
-      status === 500 &&
-      (method === "put" || method === "delete") &&
-      /^\/((posts)|(comments))\/\d+$/.test(url);
-
-    if (!isExpectedMockApi500) {
-      console.error("API Error:", error);
-    }
+    console.error(
+      "API Error:",
+      error.response?.status,
+      error.message
+    );
 
     return Promise.reject(error);
   }

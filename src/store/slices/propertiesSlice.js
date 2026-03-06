@@ -1,3 +1,9 @@
+/**
+ * Properties Redux Slice
+ * Handles CRUD operations for Equipment Class Properties.
+ * Fetches properties based on the selected equipment class.
+ */
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getProperties,

@@ -1,3 +1,8 @@
+/**
+ * EquipmentClassList Component
+ * Displays equipment class management UI including form and table.
+ */
+
 import { useEffect, useState, useMemo } from "react";
 import { Row, Col, Typography, Input, Card, message } from "antd";
 import useEquipmentClass from "../../hooks/useEquipmentClass";

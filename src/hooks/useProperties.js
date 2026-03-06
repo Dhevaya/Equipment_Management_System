@@ -1,3 +1,8 @@
+/**
+ * Custom Hook: useProperties
+ * Provides property data and CRUD actions for the selected equipment class.
+ */
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchProperties,

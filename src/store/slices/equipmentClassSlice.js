@@ -1,3 +1,9 @@
+/**
+ * Equipment Class Redux Slice
+ * Handles CRUD state management for Equipment Classes.
+ * Uses Redux Toolkit async thunks to communicate with API layer.
+ */
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getEquipmentClasses,

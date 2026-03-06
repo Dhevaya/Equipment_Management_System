@@ -1,3 +1,10 @@
+/**
+ * Custom Hook: useEquipmentClass
+ * Provides equipment class data and actions to components.
+ * Abstracts Redux dispatch and selector logic.
+ */
+
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchEquipmentClasses,
