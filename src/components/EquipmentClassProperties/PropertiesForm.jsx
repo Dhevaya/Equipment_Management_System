@@ -29,16 +29,13 @@ const PropertiesForm = ({
       });
     } else {
       form.resetFields();
+      form.setFieldsValue({
+        effectiveStartDate: dayjs(),
+      });
     }
   }, [selectedProperty, form]);
 
   const handleCreate = () => {
-    const startDate = new Date().toISOString();
-
-    form.setFieldsValue({
-      effectiveStartDate: dayjs(startDate),
-    });
-
     form.validateFields().then((values) => {
       onCreate({
         id: values.id,
@@ -46,7 +43,7 @@ const PropertiesForm = ({
         value: values.value,
         uom: values.uom,
         equipmentClassAutoId,
-        effectiveStartDate: startDate,
+        effectiveStartDate: values.effectiveStartDate.toISOString(),
         effectiveEndDate: values.effectiveEndDate
           ? values.effectiveEndDate.toISOString()
           : null,
@@ -150,7 +147,7 @@ const PropertiesForm = ({
           { required: true, message: "Effective Start Date is required" },
         ]}
       >
-        <DatePicker style={{ width: "100%" }} disabled />
+        <DatePicker style={{ width: "100%" }} disabled={isEditMode} />
       </Form.Item>
 
       <Form.Item

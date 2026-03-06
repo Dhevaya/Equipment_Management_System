@@ -41,7 +41,8 @@ export const addEquipmentClass = createAsyncThunk(
       const payload = {
         ...data,
         autoId: 0,
-        effectiveStartDate: new Date().toISOString(),
+        effectiveStartDate:
+          data.effectiveStartDate || new Date().toISOString(),
       };
       const response = await createEquipmentClass(payload);
       return {

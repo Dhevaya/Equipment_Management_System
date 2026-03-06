@@ -1,18 +1,13 @@
 
-import { useState } from "react";
 import { Layout } from "antd";
 import TopBar from "./components/Layout/TopBar";
 import Sidebar from "./components/Layout/Sidebar";
 
 import EquipmentClassList from "./components/EquipmentClass/EquipmentClassList";
-import PropertiesList from "./components/EquipmentClassProperties/PropertiesList";
 
 const { Header, Content } = Layout;
 
 const App = () => {
-
-  const [selectedPage, setSelectedPage] = useState("equipment");
-
   return (
     <Layout style={{ minHeight: "100vh" }}>
       
@@ -22,10 +17,7 @@ const App = () => {
 
       <Layout>
 
-        <Sidebar
-          selectedPage={selectedPage}
-          setSelectedPage={setSelectedPage}
-        />
+        <Sidebar />
 
         <Layout style={{ flex: 1, minWidth: 0 }}>
           <Content
@@ -35,10 +27,7 @@ const App = () => {
               minHeight: "100vh",
             }}
           >
-
-            {selectedPage === "equipment" && <EquipmentClassList />}
-
-            {selectedPage === "properties" && <PropertiesList />}
+            <EquipmentClassList />
 
           </Content>
         </Layout>

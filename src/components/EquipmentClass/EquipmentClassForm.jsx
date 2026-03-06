@@ -28,21 +28,19 @@ const EquipmentClassForm = ({
       });
     } else {
       form.resetFields();
+      form.setFieldsValue({
+        effectiveStartDate: dayjs(),
+        isActive: true,
+      });
     }
   }, [selectedItem, form]);
 
   const handleCreate = () => {
-    const startDate = new Date().toISOString();
-
-    form.setFieldsValue({
-      effectiveStartDate: dayjs(startDate),
-    });
-
     form.validateFields().then((values) => {
       onCreate({
         id: values.id,
         description: values.description,
-        effectiveStartDate: startDate,
+        effectiveStartDate: values.effectiveStartDate.toISOString(),
         effectiveEndDate: values.effectiveEndDate
           ? values.effectiveEndDate.toISOString()
           : null,
@@ -122,7 +120,7 @@ const EquipmentClassForm = ({
           { required: true, message: "Effective Start Date is required" },
         ]}
       >
-        <DatePicker style={{ width: "100%" }} disabled />
+        <DatePicker style={{ width: "100%" }} disabled={isEditMode} />
       </Form.Item>
 
       <Form.Item

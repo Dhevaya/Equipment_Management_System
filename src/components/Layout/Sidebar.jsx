@@ -1,6 +1,6 @@
 
 import { Layout, Menu } from "antd";
-import { AppstoreOutlined, UnorderedListOutlined } from "@ant-design/icons";
+import { AppstoreOutlined } from "@ant-design/icons";
 
 const { Sider } = Layout;
 
@@ -10,14 +10,9 @@ const items = [
     icon: <AppstoreOutlined />,
     label: "Equipment Classes",
   },
-  {
-    key: "properties",
-    icon: <UnorderedListOutlined />,
-    label: "Properties",
-  },
 ];
 
-const Sidebar = ({ selectedPage, setSelectedPage }) => {
+const Sidebar = () => {
   return (
     <Sider
       width={220}
@@ -27,9 +22,8 @@ const Sidebar = ({ selectedPage, setSelectedPage }) => {
     >
       <Menu
         mode="inline"
-        selectedKeys={[selectedPage]}
+        selectedKeys={["equipment"]}
         items={items}
-        onClick={(e) => setSelectedPage(e.key)}
         style={{ height: "100%", borderRight: 0 }}
       />
     </Sider>

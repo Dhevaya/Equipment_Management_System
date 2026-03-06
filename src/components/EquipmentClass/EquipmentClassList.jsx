@@ -8,6 +8,7 @@ import { Row, Col, Typography, Input, Card, message } from "antd";
 import useEquipmentClass from "../../hooks/useEquipmentClass";
 import EquipmentClassForm from "./EquipmentClassForm";
 import EquipmentClassTable from "./EquipmentClassTable";
+import PropertiesList from "../EquipmentClassProperties/PropertiesList";
 
 const { Title } = Typography;
 
@@ -99,6 +100,13 @@ const EquipmentClassList = () => {
           </Card>
         </Col>
       </Row>
+
+      <Card
+        title="Linked Properties"
+        style={{ marginTop: 16 }}
+      >
+        <PropertiesList />
+      </Card>
     </div>
   );
 };
